@@ -1,0 +1,28 @@
+import { Project } from './project.entity';
+import { User } from './user.entity';
+import { TimeLog } from './time-log.entity';
+import { CostEntry } from './cost-entry.entity';
+export declare enum TaskStatus {
+    TO_DO = "TO_DO",
+    IN_PROGRESS = "IN_PROGRESS",
+    DONE = "DONE"
+}
+export declare enum TaskType {
+    TASK = "TASK",
+    BUG = "BUG",
+    FEATURE = "FEATURE"
+}
+export declare class Task {
+    id: number;
+    title: string;
+    description: string;
+    status: TaskStatus;
+    type: TaskType;
+    startDate: Date;
+    endDate: Date;
+    storyPoints: number;
+    project: Project;
+    assignee: User;
+    timeLogs: TimeLog[];
+    costEntries: CostEntry[];
+}
