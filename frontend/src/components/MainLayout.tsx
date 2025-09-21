@@ -9,20 +9,25 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import HomeIcon from '@mui/icons-material/Home';
-import ArticleIcon from '@mui/icons-material/Article';
-import BugReportIcon from '@mui/icons-material/BugReport';
-import PeopleIcon from '@mui/icons-material/People';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import FolderOpenIcon from '@mui/icons-material/FolderOpen';
+import {
+  Button, // Added
+  ListItem, // Added
+  ListItemButton, // Added
+  ListItemIcon, // Added
+  ListItemText, // Added
+} from '@mui/material'; // Added to existing import
+import {
+  Menu as MenuIcon,
+  ChevronLeft as ChevronLeftIcon,
+  ChevronRight as ChevronRightIcon,
+  Home as HomeIcon,
+  Article as ArticleIcon,
+  BugReport as BugReportIcon,
+  People as PeopleIcon,
+  AccessTime as AccessTimeIcon,
+  AttachMoney as AttachMoneyIcon,
+  FolderOpen as FolderOpenIcon,
+} from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 
 const drawerWidth = 240;

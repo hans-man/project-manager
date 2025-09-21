@@ -8,6 +8,6 @@ export declare class CostentriesService {
     create(createCostEntryDto: CreateCostEntryDto): Promise<CostEntry>;
     findAll(): Promise<CostEntry[]>;
     findOne(id: number): Promise<CostEntry | null>;
-    update(id: number, updateCostEntryDto: UpdateCostEntryDto): Promise<CostEntry>;
+    update(id: number, updateCostEntryDto: UpdateCostEntryDto): Promise<CostEntry | null>;
     remove(id: number): Promise<void>;
 }

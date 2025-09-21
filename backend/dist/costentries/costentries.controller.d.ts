@@ -7,6 +7,6 @@ export declare class CostentriesController {
     create(createCostEntryDto: CreateCostEntryDto): Promise<import("../users/entities/cost-entry.entity").CostEntry>;
     findAll(): Promise<import("../users/entities/cost-entry.entity").CostEntry[]>;
     findOne(id: string): Promise<import("../users/entities/cost-entry.entity").CostEntry | null>;
-    update(id: string, updateCostEntryDto: UpdateCostEntryDto): Promise<import("../users/entities/cost-entry.entity").CostEntry>;
+    update(id: string, updateCostEntryDto: UpdateCostEntryDto): Promise<import("../users/entities/cost-entry.entity").CostEntry | null>;
     remove(id: string): Promise<void>;
 }

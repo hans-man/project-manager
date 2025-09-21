@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { TimeLog } from '../users/entities/time-log.entity';
@@ -35,12 +35,13 @@ export class TimelogsService {
     return this.timeLogRepository.findOneBy({ id });
   }
 
-  async update(
-    id: number,
-    updateTimeLogDto: UpdateTimeLogDto,
-  ): Promise<TimeLog> {
+  async update(id: number, updateTimeLogDto: UpdateTimeLogDto): Promise<TimeLog> {
     await this.timeLogRepository.update(id, updateTimeLogDto);
-    return this.findOne(id);
+    const updatedTimeLog = await this.findOne(id);
+    if (!updatedTimeLog) {
+      throw new NotFoundException(`TimeLog with ID ${id} not found`);
+    }
+    return updatedTimeLog;
   }
 
   async remove(id: number): Promise<void> {

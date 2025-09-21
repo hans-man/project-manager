@@ -1,7 +1,6 @@
 import { AuthService } from './auth.service';
-interface User {
-    id: number;
-    username: string;
+import { User as UserEntity } from '../users/entities/user.entity';
+interface User extends Omit<UserEntity, 'password'> {
 }
 interface AuthenticatedRequest extends Request {
     user: User;

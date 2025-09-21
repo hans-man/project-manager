@@ -1,12 +1,13 @@
 import { Controller, Post, UseGuards, Request } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
+import { User as UserEntity } from '../users/entities/user.entity'; // Import User entity and alias it
 
-interface User {
-  id: number; // Assuming user id is a number
-  username: string; // Assuming user has a username
-}
+// Define an interface for the user object that will be attached to the request
+// This should match the type returned by AuthService.login
+interface User extends Omit<UserEntity, 'password'> {}
 
+// Define an interface for the Request object with the user property
 interface AuthenticatedRequest extends Request {
   user: User;
 }

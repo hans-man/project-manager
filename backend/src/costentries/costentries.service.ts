@@ -39,7 +39,7 @@ export class CostentriesService {
   async update(
     id: number,
     updateCostEntryDto: UpdateCostEntryDto,
-  ): Promise<CostEntry> {
+  ): Promise<CostEntry | null> {
     await this.costEntryRepository.update(id, updateCostEntryDto);
     return this.findOne(id);
   }

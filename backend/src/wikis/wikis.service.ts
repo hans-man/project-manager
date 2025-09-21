@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { WikiPage } from '../users/entities/wiki-page.entity';
@@ -35,12 +35,13 @@ export class WikisService {
     return this.wikiPageRepository.findOneBy({ id });
   }
 
-  async update(
-    id: number,
-    updateWikiPageDto: UpdateWikiPageDto,
-  ): Promise<WikiPage> {
+  async update(id: number, updateWikiPageDto: UpdateWikiPageDto): Promise<WikiPage> {
     await this.wikiPageRepository.update(id, updateWikiPageDto);
-    return this.findOne(id);
+    const updatedWikiPage = await this.findOne(id);
+    if (!updatedWikiPage) {
+      throw new NotFoundException(`WikiPage with ID ${id} not found`);
+    }
+    return updatedWikiPage;
   }
 
   async remove(id: number): Promise<void> {
