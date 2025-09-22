@@ -40,7 +40,11 @@ let WikisService = class WikisService {
     }
     async update(id, updateWikiPageDto) {
         await this.wikiPageRepository.update(id, updateWikiPageDto);
-        return this.findOne(id);
+        const updatedWikiPage = await this.findOne(id);
+        if (!updatedWikiPage) {
+            throw new common_1.NotFoundException(`WikiPage with ID ${id} not found`);
+        }
+        return updatedWikiPage;
     }
     async remove(id) {
         await this.wikiPageRepository.delete(id);

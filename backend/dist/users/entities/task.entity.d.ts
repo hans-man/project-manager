@@ -2,6 +2,7 @@ import { Project } from './project.entity';
 import { User } from './user.entity';
 import { TimeLog } from './time-log.entity';
 import { CostEntry } from './cost-entry.entity';
+import { BaseEntity } from '../../common/entities/base.entity';
 export declare enum TaskStatus {
     TO_DO = "TO_DO",
     IN_PROGRESS = "IN_PROGRESS",
@@ -12,8 +13,7 @@ export declare enum TaskType {
     BUG = "BUG",
     FEATURE = "FEATURE"
 }
-export declare class Task {
-    id: number;
+export declare class Task extends BaseEntity {
     title: string;
     description: string;
     status: TaskStatus;

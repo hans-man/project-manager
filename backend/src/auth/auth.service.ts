@@ -14,12 +14,7 @@ export class AuthService {
     email: string,
     pass: string,
   ): Promise<Omit<User, 'password'> | null> {
-    const user: Omit<User, 'password'> | null =
-      await this.usersService.validateUser(email, pass);
-    if (user) {
-      return user;
-    }
-    return null;
+    return this.usersService.validateUser(email, pass);
   }
 
   login(user: Omit<User, 'password'>) {

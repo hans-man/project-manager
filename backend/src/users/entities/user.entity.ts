@@ -1,15 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Entity, Column, OneToMany } from 'typeorm';
 import { Project } from './project.entity';
 import { Task } from './task.entity';
 import { WikiPage } from './wiki-page.entity';
 import { TimeLog } from './time-log.entity';
 import { CostEntry } from './cost-entry.entity';
+import { BaseEntity } from '../../common/entities/base.entity';
 
 @Entity({ name: 'users' })
-export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class User extends BaseEntity {
   @Column()
   name: string;
 

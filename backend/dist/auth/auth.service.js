@@ -21,11 +21,7 @@ let AuthService = class AuthService {
         this.jwtService = jwtService;
     }
     async validateUser(email, pass) {
-        const user = await this.usersService.validateUser(email, pass);
-        if (user) {
-            return user;
-        }
-        return null;
+        return this.usersService.validateUser(email, pass);
     }
     login(user) {
         const payload = { username: user.email, sub: user.id };

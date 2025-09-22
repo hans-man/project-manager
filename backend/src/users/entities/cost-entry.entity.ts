@@ -1,12 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, Column, ManyToOne } from 'typeorm';
 import { Task } from './task.entity';
 import { User } from './user.entity';
+import { Project } from './project.entity';
+import { BaseEntity } from '../../common/entities/base.entity';
 
 @Entity({ name: 'cost_entries' })
-export class CostEntry {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class CostEntry extends BaseEntity {
   @Column('decimal', { precision: 10, scale: 2 })
   amount: number;
 
@@ -21,4 +20,7 @@ export class CostEntry {
 
   @ManyToOne(() => User, (user) => user.costEntries, { eager: true })
   user: User;
+
+  @ManyToOne(() => Project, (project) => project.costEntries) // Add ManyToOne to Project
+  project: Project;
 }

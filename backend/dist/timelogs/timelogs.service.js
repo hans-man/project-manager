@@ -40,7 +40,11 @@ let TimelogsService = class TimelogsService {
     }
     async update(id, updateTimeLogDto) {
         await this.timeLogRepository.update(id, updateTimeLogDto);
-        return this.findOne(id);
+        const updatedTimeLog = await this.findOne(id);
+        if (!updatedTimeLog) {
+            throw new common_1.NotFoundException(`TimeLog with ID ${id} not found`);
+        }
+        return updatedTimeLog;
     }
     async remove(id) {
         await this.timeLogRepository.delete(id);

@@ -35,7 +35,10 @@ export class WikisService {
     return this.wikiPageRepository.findOneBy({ id });
   }
 
-  async update(id: number, updateWikiPageDto: UpdateWikiPageDto): Promise<WikiPage> {
+  async update(
+    id: number,
+    updateWikiPageDto: UpdateWikiPageDto,
+  ): Promise<WikiPage> {
     await this.wikiPageRepository.update(id, updateWikiPageDto);
     const updatedWikiPage = await this.findOne(id);
     if (!updatedWikiPage) {

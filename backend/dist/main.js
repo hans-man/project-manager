@@ -12,11 +12,11 @@ async function bootstrap() {
         transform: true,
     }));
     app.enableCors({
-        origin: 'http://localhost:3001',
+        origin: 'http://localhost:3000',
         methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
         credentials: true,
     });
-    await app.listen(process.env.PORT ?? 3000);
+    await app.listen(process.env.PORT ?? 3001);
 }
 bootstrap().catch((err) => {
     console.error('Error during bootstrap:', err);

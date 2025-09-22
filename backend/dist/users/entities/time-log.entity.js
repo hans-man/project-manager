@@ -13,18 +13,16 @@ exports.TimeLog = void 0;
 const typeorm_1 = require("typeorm");
 const task_entity_1 = require("./task.entity");
 const user_entity_1 = require("./user.entity");
-let TimeLog = class TimeLog {
-    id;
+const project_entity_1 = require("./project.entity");
+const base_entity_1 = require("../../common/entities/base.entity");
+let TimeLog = class TimeLog extends base_entity_1.BaseEntity {
     hours;
     date;
     task;
     user;
+    project;
 };
 exports.TimeLog = TimeLog;
-__decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)(),
-    __metadata("design:type", Number)
-], TimeLog.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)('decimal', { precision: 10, scale: 2 }),
     __metadata("design:type", Number)
@@ -41,6 +39,10 @@ __decorate([
     (0, typeorm_1.ManyToOne)(() => user_entity_1.User, (user) => user.timeLogs, { eager: true }),
     __metadata("design:type", user_entity_1.User)
 ], TimeLog.prototype, "user", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => project_entity_1.Project, (project) => project.timeLogs),
+    __metadata("design:type", project_entity_1.Project)
+], TimeLog.prototype, "project", void 0);
 exports.TimeLog = TimeLog = __decorate([
     (0, typeorm_1.Entity)({ name: 'time_logs' })
 ], TimeLog);

@@ -15,11 +15,11 @@ async function bootstrap() {
     }),
   );
   app.enableCors({
-    origin: 'http://localhost:3001', // Allow requests from your frontend
+    origin: 'http://localhost:3000', // Allow requests from your frontend
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(process.env.PORT ?? 3001);
 }
 bootstrap().catch((err) => {
   console.error('Error during bootstrap:', err);

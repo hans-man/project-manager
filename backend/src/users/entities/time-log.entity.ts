@@ -1,12 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, Column, ManyToOne } from 'typeorm';
 import { Task } from './task.entity';
 import { User } from './user.entity';
+import { Project } from './project.entity';
+import { BaseEntity } from '../../common/entities/base.entity';
 
 @Entity({ name: 'time_logs' })
-export class TimeLog {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class TimeLog extends BaseEntity {
   @Column('decimal', { precision: 10, scale: 2 })
   hours: number;
 
@@ -18,4 +17,7 @@ export class TimeLog {
 
   @ManyToOne(() => User, (user) => user.timeLogs, { eager: true })
   user: User;
+
+  @ManyToOne(() => Project, (project) => project.timeLogs) // Add ManyToOne to Project
+  project: Project;
 }

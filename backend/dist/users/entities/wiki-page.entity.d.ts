@@ -1,7 +1,7 @@
 import { Project } from './project.entity';
 import { User } from './user.entity';
-export declare class WikiPage {
-    id: number;
+import { BaseEntity } from '../../common/entities/base.entity';
+export declare class WikiPage extends BaseEntity {
     title: string;
     content: string;
     project: Project;

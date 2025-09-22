@@ -11,29 +11,31 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Project = void 0;
 const typeorm_1 = require("typeorm");
-const user_entity_1 = require("./user.entity");
-const task_entity_1 = require("./task.entity");
+const issue_entity_1 = require("../../issues/entities/issue.entity");
+const time_log_entity_1 = require("./time-log.entity");
+const cost_entry_entity_1 = require("./cost-entry.entity");
 const wiki_page_entity_1 = require("./wiki-page.entity");
-let Project = class Project {
-    id;
+const task_entity_1 = require("./task.entity");
+const user_entity_1 = require("./user.entity");
+const base_entity_1 = require("../../common/entities/base.entity");
+let Project = class Project extends base_entity_1.BaseEntity {
     name;
     description;
     budget;
-    owner;
-    tasks;
+    issues;
+    timeLogs;
+    costEntries;
     wikiPages;
+    tasks;
+    owner;
 };
 exports.Project = Project;
-__decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)(),
-    __metadata("design:type", Number)
-], Project.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], Project.prototype, "name", void 0);
 __decorate([
-    (0, typeorm_1.Column)('text', { nullable: true }),
+    (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], Project.prototype, "description", void 0);
 __decorate([
@@ -41,18 +43,30 @@ __decorate([
     __metadata("design:type", Number)
 ], Project.prototype, "budget", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => user_entity_1.User, (user) => user.projects, { eager: true }),
-    __metadata("design:type", user_entity_1.User)
-], Project.prototype, "owner", void 0);
+    (0, typeorm_1.OneToMany)(() => issue_entity_1.Issue, (issue) => issue.project),
+    __metadata("design:type", Array)
+], Project.prototype, "issues", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => time_log_entity_1.TimeLog, (timeLog) => timeLog.project),
+    __metadata("design:type", Array)
+], Project.prototype, "timeLogs", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => cost_entry_entity_1.CostEntry, (costEntry) => costEntry.project),
+    __metadata("design:type", Array)
+], Project.prototype, "costEntries", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => wiki_page_entity_1.WikiPage, (wikiPage) => wikiPage.project),
+    __metadata("design:type", Array)
+], Project.prototype, "wikiPages", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => task_entity_1.Task, (task) => task.project),
     __metadata("design:type", Array)
 ], Project.prototype, "tasks", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => wiki_page_entity_1.WikiPage, (wikiPage) => wikiPage.project),
-    __metadata("design:type", Array)
-], Project.prototype, "wikiPages", void 0);
+    (0, typeorm_1.ManyToOne)(() => user_entity_1.User, (user) => user.projects),
+    __metadata("design:type", user_entity_1.User)
+], Project.prototype, "owner", void 0);
 exports.Project = Project = __decorate([
-    (0, typeorm_1.Entity)({ name: 'projects' })
+    (0, typeorm_1.Entity)()
 ], Project);
 //# sourceMappingURL=project.entity.js.map

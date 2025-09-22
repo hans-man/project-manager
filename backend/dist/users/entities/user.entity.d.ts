@@ -3,8 +3,8 @@ import { Task } from './task.entity';
 import { WikiPage } from './wiki-page.entity';
 import { TimeLog } from './time-log.entity';
 import { CostEntry } from './cost-entry.entity';
-export declare class User {
-    id: number;
+import { BaseEntity } from '../../common/entities/base.entity';
+export declare class User extends BaseEntity {
     name: string;
     email: string;
     password: string;

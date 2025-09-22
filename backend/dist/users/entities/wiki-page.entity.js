@@ -13,18 +13,14 @@ exports.WikiPage = void 0;
 const typeorm_1 = require("typeorm");
 const project_entity_1 = require("./project.entity");
 const user_entity_1 = require("./user.entity");
-let WikiPage = class WikiPage {
-    id;
+const base_entity_1 = require("../../common/entities/base.entity");
+let WikiPage = class WikiPage extends base_entity_1.BaseEntity {
     title;
     content;
     project;
     author;
 };
 exports.WikiPage = WikiPage;
-__decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)(),
-    __metadata("design:type", Number)
-], WikiPage.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)

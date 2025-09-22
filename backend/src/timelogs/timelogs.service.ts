@@ -35,7 +35,10 @@ export class TimelogsService {
     return this.timeLogRepository.findOneBy({ id });
   }
 
-  async update(id: number, updateTimeLogDto: UpdateTimeLogDto): Promise<TimeLog> {
+  async update(
+    id: number,
+    updateTimeLogDto: UpdateTimeLogDto,
+  ): Promise<TimeLog> {
     await this.timeLogRepository.update(id, updateTimeLogDto);
     const updatedTimeLog = await this.findOne(id);
     if (!updatedTimeLog) {

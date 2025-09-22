@@ -13,19 +13,17 @@ exports.CostEntry = void 0;
 const typeorm_1 = require("typeorm");
 const task_entity_1 = require("./task.entity");
 const user_entity_1 = require("./user.entity");
-let CostEntry = class CostEntry {
-    id;
+const project_entity_1 = require("./project.entity");
+const base_entity_1 = require("../../common/entities/base.entity");
+let CostEntry = class CostEntry extends base_entity_1.BaseEntity {
     amount;
     date;
     description;
     task;
     user;
+    project;
 };
 exports.CostEntry = CostEntry;
-__decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)(),
-    __metadata("design:type", Number)
-], CostEntry.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)('decimal', { precision: 10, scale: 2 }),
     __metadata("design:type", Number)
@@ -46,6 +44,10 @@ __decorate([
     (0, typeorm_1.ManyToOne)(() => user_entity_1.User, (user) => user.costEntries, { eager: true }),
     __metadata("design:type", user_entity_1.User)
 ], CostEntry.prototype, "user", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => project_entity_1.Project, (project) => project.costEntries),
+    __metadata("design:type", project_entity_1.Project)
+], CostEntry.prototype, "project", void 0);
 exports.CostEntry = CostEntry = __decorate([
     (0, typeorm_1.Entity)({ name: 'cost_entries' })
 ], CostEntry);

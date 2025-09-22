@@ -5,7 +5,7 @@ import { User as UserEntity } from '../users/entities/user.entity'; // Import Us
 
 // Define an interface for the user object that will be attached to the request
 // This should match the type returned by AuthService.login
-interface User extends Omit<UserEntity, 'password'> {}
+type User = Omit<UserEntity, 'password'>;
 
 // Define an interface for the Request object with the user property
 interface AuthenticatedRequest extends Request {

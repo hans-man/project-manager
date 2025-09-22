@@ -17,12 +17,15 @@ const task_entity_1 = require("./users/entities/task.entity");
 const wiki_page_entity_1 = require("./users/entities/wiki-page.entity");
 const time_log_entity_1 = require("./users/entities/time-log.entity");
 const cost_entry_entity_1 = require("./users/entities/cost-entry.entity");
+const issue_entity_1 = require("./issues/entities/issue.entity");
 const users_module_1 = require("./users/users.module");
 const auth_module_1 = require("./auth/auth.module");
 const issues_module_1 = require("./issues/issues.module");
 const wikis_module_1 = require("./wikis/wikis.module");
 const timelogs_module_1 = require("./timelogs/timelogs.module");
 const costentries_module_1 = require("./costentries/costentries.module");
+const projects_module_1 = require("./projects/projects.module");
+const audit_subscriber_1 = require("./common/subscribers/audit.subscriber");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -36,8 +39,9 @@ exports.AppModule = AppModule = __decorate([
                 username: 'root',
                 password: 'Hans0209!!',
                 database: 'project_manager_db',
-                entities: [user_entity_1.User, project_entity_1.Project, task_entity_1.Task, wiki_page_entity_1.WikiPage, time_log_entity_1.TimeLog, cost_entry_entity_1.CostEntry],
+                entities: [user_entity_1.User, project_entity_1.Project, task_entity_1.Task, wiki_page_entity_1.WikiPage, time_log_entity_1.TimeLog, cost_entry_entity_1.CostEntry, issue_entity_1.Issue],
                 synchronize: true,
+                subscribers: [audit_subscriber_1.AuditSubscriber],
             }),
             users_module_1.UsersModule,
             auth_module_1.AuthModule,
@@ -45,6 +49,7 @@ exports.AppModule = AppModule = __decorate([
             wikis_module_1.WikisModule,
             timelogs_module_1.TimelogsModule,
             costentries_module_1.CostentriesModule,
+            projects_module_1.ProjectsModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

@@ -8,7 +8,9 @@ import {
   Grid,
   Card,
   CardContent,
+  Button, // Button 컴포넌트 임포트
 } from '@mui/material';
+import { useNavigate } from 'react-router-dom'; // useNavigate 임포트
 
 interface Issue {
   id: number;
@@ -26,6 +28,7 @@ const IssueList = ({ token }: { token: string }) => {
   const [issues, setIssues] = useState<Issue[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const navigate = useNavigate(); // useNavigate 훅 사용
 
   useEffect(() => {
     const fetchIssues = async () => {
@@ -75,6 +78,16 @@ const IssueList = ({ token }: { token: string }) => {
         <Typography component="h1" variant="h4" gutterBottom sx={{ mb: 3 }}>
           프로젝트 이슈
         </Typography>
+        {/* 이슈 등록 버튼 추가 */}
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => navigate('/issues/new')} // /issues/new 경로로 이동
+          sx={{ mb: 3 }}
+        >
+          새 이슈 등록
+        </Button>
+
         {error && <Alert severity="error" sx={{ mt: 2, width: '100%' }}>{error}</Alert>}
         {issues.length > 0 ? (
           <Grid container spacing={2} sx={{ mt: 2 }}>
@@ -85,17 +98,13 @@ const IssueList = ({ token }: { token: string }) => {
                     <Typography variant="h6" component="div">
                       {issue.title}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      상태: {issue.status}
+                    <Typography variant="body2" color="text.secondary">\n                      상태: {issue.status}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      담당자: {issue.assignee}
+                    <Typography variant="body2" color="text.secondary">\n                      담당자: {issue.assignee}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      보고자: {issue.reporter}
+                    <Typography variant="body2" color="text.secondary">\n                      보고자: {issue.reporter}
                     </Typography>
-                    <Typography variant="caption" color="text.disabled">
-                      생성일: {new Date(issue.created_at).toLocaleDateString()}
+                    <Typography variant="caption" color="text.disabled">\n                      생성일: {new Date(issue.created_at).toLocaleDateString()}
                     </Typography>
                   </CardContent>
                 </Card>

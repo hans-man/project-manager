@@ -16,8 +16,8 @@ const task_entity_1 = require("./task.entity");
 const wiki_page_entity_1 = require("./wiki-page.entity");
 const time_log_entity_1 = require("./time-log.entity");
 const cost_entry_entity_1 = require("./cost-entry.entity");
-let User = class User {
-    id;
+const base_entity_1 = require("../../common/entities/base.entity");
+let User = class User extends base_entity_1.BaseEntity {
     name;
     email;
     password;
@@ -28,10 +28,6 @@ let User = class User {
     costEntries;
 };
 exports.User = User;
-__decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)(),
-    __metadata("design:type", Number)
-], User.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)

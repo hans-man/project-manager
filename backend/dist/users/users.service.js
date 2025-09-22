@@ -49,33 +49,32 @@ exports.UsersService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
-const bcrypt = __importStar(require("bcrypt"));
 const user_entity_1 = require("./entities/user.entity");
+const bcrypt = __importStar(require("bcrypt"));
 let UsersService = class UsersService {
     userRepository;
     constructor(userRepository) {
         this.userRepository = userRepository;
     }
     async create(createUserDto) {
-        const { email, password, name } = createUserDto;
-        const existingUser = await this.userRepository.findOne({
-            where: { email },
-        });
+        const { email, password, ...userData } = createUserDto;
+        const existingUser = await this.userRepository.findOneBy({ email });
         if (existingUser) {
             throw new common_1.ConflictException('User with this email already exists');
         }
         const hashedPassword = await bcrypt.hash(password, 10);
         const newUser = this.userRepository.create({
+            ...userData,
             email,
             password: hashedPassword,
-            name,
         });
-        const savedUser = await this.userRepository.save(newUser);
-        const { password: _, ...result } = savedUser;
-        return result;
+        return this.userRepository.save(newUser);
     }
     async findOneByEmail(email) {
-        return this.userRepository.findOne({ where: { email } });
+        return this.userRepository.findOneBy({ email });
+    }
+    async findOneById(id) {
+        return this.userRepository.findOneBy({ id });
     }
     async validateUser(email, pass) {
         const user = await this.findOneByEmail(email);
@@ -84,23 +83,6 @@ let UsersService = class UsersService {
             return result;
         }
         return null;
-    }
-    async findAll() {
-        const users = await this.userRepository.find();
-        return users.map((user) => {
-            const { password, ...result } = user;
-            return result;
-        });
-    }
-    findOne(id) {
-        return `This action returns a #${id} user`;
-    }
-    update(id, _updateUserDto) {
-        void _updateUserDto;
-        return `This action updates a #${id} user`;
-    }
-    remove(id) {
-        return `This action removes a #${id} user`;
     }
 };
 exports.UsersService = UsersService;

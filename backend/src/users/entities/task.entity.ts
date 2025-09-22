@@ -1,6 +1,5 @@
 import {
   Entity,
-  PrimaryGeneratedColumn,
   Column,
   ManyToOne,
   OneToMany,
@@ -9,6 +8,7 @@ import { Project } from './project.entity';
 import { User } from './user.entity';
 import { TimeLog } from './time-log.entity';
 import { CostEntry } from './cost-entry.entity';
+import { BaseEntity } from '../../common/entities/base.entity';
 
 export enum TaskStatus {
   TO_DO = 'TO_DO',
@@ -23,10 +23,7 @@ export enum TaskType {
 }
 
 @Entity({ name: 'tasks' })
-export class Task {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class Task extends BaseEntity {
   @Column()
   title: string;
 

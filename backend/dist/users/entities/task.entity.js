@@ -15,6 +15,7 @@ const project_entity_1 = require("./project.entity");
 const user_entity_1 = require("./user.entity");
 const time_log_entity_1 = require("./time-log.entity");
 const cost_entry_entity_1 = require("./cost-entry.entity");
+const base_entity_1 = require("../../common/entities/base.entity");
 var TaskStatus;
 (function (TaskStatus) {
     TaskStatus["TO_DO"] = "TO_DO";
@@ -27,8 +28,7 @@ var TaskType;
     TaskType["BUG"] = "BUG";
     TaskType["FEATURE"] = "FEATURE";
 })(TaskType || (exports.TaskType = TaskType = {}));
-let Task = class Task {
-    id;
+let Task = class Task extends base_entity_1.BaseEntity {
     title;
     description;
     status;
@@ -42,10 +42,6 @@ let Task = class Task {
     costEntries;
 };
 exports.Task = Task;
-__decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)(),
-    __metadata("design:type", Number)
-], Task.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)

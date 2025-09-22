@@ -1,9 +1,9 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { Injectable, ConflictException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import * as bcrypt from 'bcrypt';
-import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
+import { CreateUserDto } from './dto/create-user.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -12,12 +12,10 @@ export class UsersService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  async create(createUserDto: CreateUserDto): Promise<Omit<User, 'password'>> {
-    const { email, password, name } = createUserDto;
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    const { email, password, ...userData } = createUserDto;
 
-    const existingUser = await this.userRepository.findOne({
-      where: { email },
-    });
+    const existingUser = await this.userRepository.findOneBy({ email });
     if (existingUser) {
       throw new ConflictException('User with this email already exists');
     }
@@ -25,20 +23,19 @@ export class UsersService {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = this.userRepository.create({
+      ...userData,
       email,
       password: hashedPassword,
-      name,
     });
-
-    const savedUser = await this.userRepository.save(newUser);
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password: _, ...result } = savedUser;
-    return result;
+    return this.userRepository.save(newUser);
   }
 
   async findOneByEmail(email: string): Promise<User | null> {
-    return this.userRepository.findOne({ where: { email } });
+    return this.userRepository.findOneBy({ email });
+  }
+
+  async findOneById(id: number): Promise<User | null> {
+    return this.userRepository.findOneBy({ id });
   }
 
   async validateUser(
@@ -48,31 +45,9 @@ export class UsersService {
     const user = await this.findOneByEmail(email);
     if (user && (await bcrypt.compare(pass, user.password))) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { password, ...result } = user;
+      const { password, ...result } = user; // Exclude password from the returned user object
       return result;
     }
     return null;
-  }
-
-  async findAll(): Promise<Omit<User, 'password'>[]> {
-    const users = await this.userRepository.find();
-    return users.map((user) => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { password, ...result } = user;
-      return result;
-    });
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
-  }
-
-  update(id: number, _updateUserDto: any) {
-    void _updateUserDto; // Explicitly mark as used to silence linting error
-    return `This action updates a #${id} user`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
   }
 }

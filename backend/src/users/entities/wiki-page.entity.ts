@@ -1,12 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, Column, ManyToOne } from 'typeorm';
 import { Project } from './project.entity';
 import { User } from './user.entity';
+import { BaseEntity } from '../../common/entities/base.entity';
 
 @Entity({ name: 'wiki_pages' })
-export class WikiPage {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class WikiPage extends BaseEntity {
   @Column()
   title: string;
 

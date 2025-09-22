@@ -3,13 +3,13 @@ import axios from 'axios';
 import { Box, Button, Typography, List, ListItem, ListItemText } from '@mui/material';
 import { Link } from 'react-router-dom';
 
-interface WikiPage {
+interface IWikiPage {
   id: number;
   title: string;
 }
 
 const WikiPage: React.FC = () => {
-  const [wikiPages, setWikiPages] = useState<WikiPage[]>([]);
+  const [wikiPages, setWikiPages] = useState<IWikiPage[]>([]);
 
   useEffect(() => {
     const fetchWikiPages = async () => {
