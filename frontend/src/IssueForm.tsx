@@ -9,6 +9,7 @@ const IssueForm: React.FC = () => {
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [projectId, setProjectId] = useState<number | null>(null);
   const [message, setMessage] = useState('');
 
   // 새롭게 추가되는 필드들에 대한 state (날짜 필드는 Date | null 타입으로 변경)
@@ -30,10 +31,15 @@ const IssueForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (projectId === null) {
+      setMessage('프로젝트 ID를 입력해주세요.');
+      return;
+    }
     try {
       await axios.post('http://localhost:3001/api/issues', {
         title,
         description,
+        projectId,
         taskName,
         testClassification,
         testRound,
@@ -50,22 +56,24 @@ const IssueForm: React.FC = () => {
         businessOwnerReviewCompletionDate,
       });
       setMessage('이슈가 성공적으로 등록되었습니다!');
+      // Reset form
       setTitle('');
       setDescription('');
+      setProjectId(null);
       setTaskName('');
       setTestClassification('');
-      setTestRound(null); // 초기화도 null로
+      setTestRound(null);
       setProgramId('');
       setProgramName('');
       setProgramDescription('');
       setAssigneeName('');
-      setDevelopmentDueDate(null); // 초기화도 null로
-      setDevelopmentCompletionDate(null); // 초기화도 null로
+      setDevelopmentDueDate(null);
+      setDevelopmentCompletionDate(null);
       setStatus('');
       setManagerName('');
-      setManagerReviewCompletionDate(null); // 초기화도 null로
+      setManagerReviewCompletionDate(null);
       setBusinessOwnerName('');
-      setBusinessOwnerReviewCompletionDate(null); // 초기화도 null로
+      setBusinessOwnerReviewCompletionDate(null);
       navigate('/issues');
 
     } catch (error) {
@@ -97,6 +105,16 @@ const IssueForm: React.FC = () => {
         rows={4}
         value={description}
         onChange={(e) => setDescription(e.target.value)}
+        sx={{ mb: 2 }}
+        required
+      />
+      <TextField
+        label="프로젝트 ID"
+        variant="outlined"
+        fullWidth
+        type="number"
+        value={projectId === null ? '' : projectId}
+        onChange={(e) => setProjectId(e.target.value === '' ? null : parseInt(e.target.value))}
         sx={{ mb: 2 }}
         required
       />

@@ -21,7 +21,7 @@ import MainLayout from './components/MainLayout'; // Import MainLayout component
 import { CssBaseline, Box } from '@mui/material';
 
 // Date Picker 관련 임포트
-import { LocalizationProvider } from '@mui/x-date-pickers';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 
