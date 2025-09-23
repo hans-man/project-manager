@@ -3,9 +3,6 @@ import { CreateIssueDto } from './dto/create-issue.dto';
 export declare class IssuesController {
     private readonly issuesService;
     constructor(issuesService: IssuesService);
-    create(createIssueDto: CreateIssueDto): {
-        message: string;
-        issue: CreateIssueDto;
-    };
-    findAll(): string[];
+    create(createIssueDto: CreateIssueDto): Promise<import("./entities/issue.entity").Issue>;
+    findAll(): Promise<import("./entities/issue.entity").Issue[]>;
 }

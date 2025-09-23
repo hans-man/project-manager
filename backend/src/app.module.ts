@@ -3,7 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './users/entities/user.entity';
-import { Project } from './users/entities/project.entity';
+import { Project } from './projects/entities/project.entity';
 import { Task } from './users/entities/task.entity';
 import { WikiPage } from './users/entities/wiki-page.entity';
 import { TimeLog } from './users/entities/time-log.entity';

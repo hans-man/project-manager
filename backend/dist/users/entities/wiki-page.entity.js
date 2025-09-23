@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.WikiPage = void 0;
 const typeorm_1 = require("typeorm");
-const project_entity_1 = require("./project.entity");
+const project_entity_1 = require("../../projects/entities/project.entity");
 const user_entity_1 = require("./user.entity");
 const base_entity_1 = require("../../common/entities/base.entity");
 let WikiPage = class WikiPage extends base_entity_1.BaseEntity {

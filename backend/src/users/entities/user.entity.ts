@@ -1,5 +1,5 @@
 import { Entity, Column, OneToMany } from 'typeorm';
-import { Project } from './project.entity';
+import { Project } from '../../projects/entities/project.entity';
 import { Task } from './task.entity';
 import { WikiPage } from './wiki-page.entity';
 import { TimeLog } from './time-log.entity';

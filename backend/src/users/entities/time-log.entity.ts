@@ -1,7 +1,7 @@
 import { Entity, Column, ManyToOne } from 'typeorm';
 import { Task } from './task.entity';
 import { User } from './user.entity';
-import { Project } from './project.entity';
+import { Project } from '../../projects/entities/project.entity';
 import { BaseEntity } from '../../common/entities/base.entity';
 
 @Entity({ name: 'time_logs' })

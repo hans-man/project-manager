@@ -13,7 +13,7 @@ exports.TimeLog = void 0;
 const typeorm_1 = require("typeorm");
 const task_entity_1 = require("./task.entity");
 const user_entity_1 = require("./user.entity");
-const project_entity_1 = require("./project.entity");
+const project_entity_1 = require("../../projects/entities/project.entity");
 const base_entity_1 = require("../../common/entities/base.entity");
 let TimeLog = class TimeLog extends base_entity_1.BaseEntity {
     hours;

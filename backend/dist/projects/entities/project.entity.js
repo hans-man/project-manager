@@ -12,11 +12,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Project = void 0;
 const typeorm_1 = require("typeorm");
 const issue_entity_1 = require("../../issues/entities/issue.entity");
-const time_log_entity_1 = require("./time-log.entity");
-const cost_entry_entity_1 = require("./cost-entry.entity");
-const wiki_page_entity_1 = require("./wiki-page.entity");
-const task_entity_1 = require("./task.entity");
-const user_entity_1 = require("./user.entity");
+const time_log_entity_1 = require("../../users/entities/time-log.entity");
+const cost_entry_entity_1 = require("../../users/entities/cost-entry.entity");
+const wiki_page_entity_1 = require("../../users/entities/wiki-page.entity");
+const task_entity_1 = require("../../users/entities/task.entity");
+const user_entity_1 = require("../../users/entities/user.entity");
 const base_entity_1 = require("../../common/entities/base.entity");
 let Project = class Project extends base_entity_1.BaseEntity {
     name;

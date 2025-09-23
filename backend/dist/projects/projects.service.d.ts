@@ -1,5 +1,5 @@
 import { Repository } from 'typeorm';
-import { Project } from '../users/entities/project.entity';
+import { Project } from './entities/project.entity';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { User } from '../users/entities/user.entity';

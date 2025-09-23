@@ -1,14 +1,36 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Issue } from './entities/issue.entity';
+import { Project } from '../projects/entities/project.entity';
 import { CreateIssueDto } from './dto/create-issue.dto';
 
 @Injectable()
 export class IssuesService {
-  create(createIssueDto: CreateIssueDto) {
-    console.log('Creating issue:', createIssueDto);
-    return { message: 'Issue created successfully', issue: createIssueDto };
+  constructor(
+    @InjectRepository(Issue)
+    private readonly issueRepository: Repository<Issue>,
+    @InjectRepository(Project)
+    private readonly projectRepository: Repository<Project>,
+  ) {}
+
+  async create(createIssueDto: CreateIssueDto): Promise<Issue> {
+    const { projectId, ...issueData } = createIssueDto;
+    const project = await this.projectRepository.findOneBy({ id: projectId });
+
+    if (!project) {
+      throw new NotFoundException(`Project with ID "${projectId}" not found`);
+    }
+
+    const newIssue = this.issueRepository.create({
+      ...issueData,
+      project,
+    });
+
+    return this.issueRepository.save(newIssue);
   }
 
-  findAll() {
-    return ['Issue 1', 'Issue 2', 'Issue 3'];
+  async findAll(): Promise<Issue[]> {
+    return this.issueRepository.find({ relations: ['project'] });
   }
 }

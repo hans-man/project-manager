@@ -4,7 +4,7 @@ import {
   ManyToOne,
   OneToMany,
 } from 'typeorm';
-import { Project } from './project.entity';
+import { Project } from '../../projects/entities/project.entity';
 import { User } from './user.entity';
 import { TimeLog } from './time-log.entity';
 import { CostEntry } from './cost-entry.entity';

@@ -5,11 +5,11 @@ import {
   ManyToOne,
 } from 'typeorm';
 import { Issue } from '../../issues/entities/issue.entity';
-import { TimeLog } from './time-log.entity';
-import { CostEntry } from './cost-entry.entity';
-import { WikiPage } from './wiki-page.entity';
-import { Task } from './task.entity';
-import { User } from './user.entity';
+import { TimeLog } from '../../users/entities/time-log.entity';
+import { CostEntry } from '../../users/entities/cost-entry.entity';
+import { WikiPage } from '../../users/entities/wiki-page.entity';
+import { Task } from '../../users/entities/task.entity';
+import { User } from '../../users/entities/user.entity';
 import { BaseEntity } from '../../common/entities/base.entity';
 
 @Entity()

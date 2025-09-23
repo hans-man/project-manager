@@ -11,7 +11,7 @@ const common_1 = require("@nestjs/common");
 const projects_controller_1 = require("./projects.controller");
 const projects_service_1 = require("./projects.service");
 const typeorm_1 = require("@nestjs/typeorm");
-const project_entity_1 = require("../users/entities/project.entity");
+const project_entity_1 = require("./entities/project.entity");
 const user_entity_1 = require("../users/entities/user.entity");
 let ProjectsModule = class ProjectsModule {
 };
