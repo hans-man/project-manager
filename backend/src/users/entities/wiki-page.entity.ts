@@ -1,5 +1,5 @@
 import { Entity, Column, ManyToOne } from 'typeorm';
-import { Project } from '../../projects/entities/project.entity';
+
 import { User } from './user.entity';
 import { BaseEntity } from '../../common/entities/base.entity';
 
@@ -11,8 +11,8 @@ export class WikiPage extends BaseEntity {
   @Column('text')
   content: string;
 
-  @ManyToOne(() => Project, (project) => project.wikiPages)
-  project: Project;
+  @Column({ nullable: true })
+  projectId: string;
 
   @ManyToOne(() => User, (user) => user.wikiPages, { eager: true })
   author: User;

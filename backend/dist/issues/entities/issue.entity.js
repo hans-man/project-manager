@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Issue = void 0;
 const typeorm_1 = require("typeorm");
 const project_entity_1 = require("../../projects/entities/project.entity");
+const user_entity_1 = require("../../users/entities/user.entity");
 const base_entity_1 = require("../../common/entities/base.entity");
 let Issue = class Issue extends base_entity_1.BaseEntity {
     title;
@@ -22,13 +23,17 @@ let Issue = class Issue extends base_entity_1.BaseEntity {
     programId;
     programName;
     programDescription;
-    assigneeName;
+    assigneeId;
+    assignee;
     developmentDueDate;
     developmentCompletionDate;
     status;
-    managerName;
+    priority;
+    managerId;
+    manager;
     managerReviewCompletionDate;
-    businessOwnerName;
+    businessOwnerId;
+    businessOwner;
     businessOwnerReviewCompletionDate;
     project;
 };
@@ -68,7 +73,11 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
-], Issue.prototype, "assigneeName", void 0);
+], Issue.prototype, "assigneeId", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => user_entity_1.User, user => user.assignedIssues),
+    __metadata("design:type", user_entity_1.User)
+], Issue.prototype, "assignee", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'datetime', nullable: true }),
     __metadata("design:type", Date)
@@ -82,9 +91,17 @@ __decorate([
     __metadata("design:type", String)
 ], Issue.prototype, "status", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ default: 'Medium' }),
+    __metadata("design:type", String)
+], Issue.prototype, "priority", void 0);
+__decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
-], Issue.prototype, "managerName", void 0);
+], Issue.prototype, "managerId", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => user_entity_1.User, user => user.managedIssues),
+    __metadata("design:type", user_entity_1.User)
+], Issue.prototype, "manager", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'datetime', nullable: true }),
     __metadata("design:type", Date)
@@ -92,13 +109,17 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
-], Issue.prototype, "businessOwnerName", void 0);
+], Issue.prototype, "businessOwnerId", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => user_entity_1.User, user => user.ownedIssues),
+    __metadata("design:type", user_entity_1.User)
+], Issue.prototype, "businessOwner", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'datetime', nullable: true }),
     __metadata("design:type", Date)
 ], Issue.prototype, "businessOwnerReviewCompletionDate", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => project_entity_1.Project, (project) => project.issues),
+    (0, typeorm_1.ManyToOne)(() => project_entity_1.Project, project => project.issues),
     __metadata("design:type", project_entity_1.Project)
 ], Issue.prototype, "project", void 0);
 exports.Issue = Issue = __decorate([

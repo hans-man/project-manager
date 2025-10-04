@@ -20,13 +20,13 @@ class CreateIssueDto {
     programId;
     programName;
     programDescription;
-    assigneeName;
+    assigneeId;
     developmentDueDate;
     developmentCompletionDate;
     status;
-    managerName;
+    managerId;
     managerReviewCompletionDate;
-    businessOwnerName;
+    businessOwnerId;
     businessOwnerReviewCompletionDate;
     projectId;
 }
@@ -75,7 +75,7 @@ __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
-], CreateIssueDto.prototype, "assigneeName", void 0);
+], CreateIssueDto.prototype, "assigneeId", void 0);
 __decorate([
     (0, class_validator_1.IsDateString)(),
     (0, class_validator_1.IsOptional)(),
@@ -95,7 +95,7 @@ __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
-], CreateIssueDto.prototype, "managerName", void 0);
+], CreateIssueDto.prototype, "managerId", void 0);
 __decorate([
     (0, class_validator_1.IsDateString)(),
     (0, class_validator_1.IsOptional)(),
@@ -105,15 +105,15 @@ __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
-], CreateIssueDto.prototype, "businessOwnerName", void 0);
+], CreateIssueDto.prototype, "businessOwnerId", void 0);
 __decorate([
     (0, class_validator_1.IsDateString)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Date)
 ], CreateIssueDto.prototype, "businessOwnerReviewCompletionDate", void 0);
 __decorate([
-    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", Number)
+    __metadata("design:type", String)
 ], CreateIssueDto.prototype, "projectId", void 0);
 //# sourceMappingURL=create-issue.dto.js.map

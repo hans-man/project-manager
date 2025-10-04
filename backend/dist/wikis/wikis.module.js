@@ -10,14 +10,18 @@ exports.WikisModule = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const wiki_page_entity_1 = require("../users/entities/wiki-page.entity");
+const project_entity_1 = require("../projects/entities/project.entity");
+const user_entity_1 = require("../users/entities/user.entity");
 const wikis_service_1 = require("./wikis.service");
+const wikis_controller_1 = require("./wikis.controller");
 let WikisModule = class WikisModule {
 };
 exports.WikisModule = WikisModule;
 exports.WikisModule = WikisModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([wiki_page_entity_1.WikiPage])],
+        imports: [typeorm_1.TypeOrmModule.forFeature([wiki_page_entity_1.WikiPage, project_entity_1.Project, user_entity_1.User])],
         providers: [wikis_service_1.WikisService],
+        controllers: [wikis_controller_1.WikisController],
     })
 ], WikisModule);
 //# sourceMappingURL=wikis.module.js.map

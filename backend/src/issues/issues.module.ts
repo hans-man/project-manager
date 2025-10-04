@@ -5,8 +5,10 @@ import { IssuesController } from './issues.controller';
 import { Issue } from './entities/issue.entity';
 import { Project } from '../projects/entities/project.entity';
 
+import { UsersModule } from '../users/users.module';
+
 @Module({
-  imports: [TypeOrmModule.forFeature([Issue, Project])],
+  imports: [TypeOrmModule.forFeature([Issue, Project]), UsersModule],
   providers: [IssuesService],
   controllers: [IssuesController],
 })

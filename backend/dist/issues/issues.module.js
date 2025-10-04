@@ -13,12 +13,13 @@ const issues_service_1 = require("./issues.service");
 const issues_controller_1 = require("./issues.controller");
 const issue_entity_1 = require("./entities/issue.entity");
 const project_entity_1 = require("../projects/entities/project.entity");
+const users_module_1 = require("../users/users.module");
 let IssuesModule = class IssuesModule {
 };
 exports.IssuesModule = IssuesModule;
 exports.IssuesModule = IssuesModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([issue_entity_1.Issue, project_entity_1.Project])],
+        imports: [typeorm_1.TypeOrmModule.forFeature([issue_entity_1.Issue, project_entity_1.Project]), users_module_1.UsersModule],
         providers: [issues_service_1.IssuesService],
         controllers: [issues_controller_1.IssuesController],
     })

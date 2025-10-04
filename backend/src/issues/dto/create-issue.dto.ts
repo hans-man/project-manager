@@ -35,7 +35,7 @@ export class CreateIssueDto {
 
   @IsString()
   @IsOptional()
-  assigneeName?: string;
+  assigneeId?: string;
 
   @IsDateString()
   @IsOptional()
@@ -51,7 +51,7 @@ export class CreateIssueDto {
 
   @IsString()
   @IsOptional()
-  managerName?: string;
+  managerId?: string;
 
   @IsDateString()
   @IsOptional()
@@ -59,13 +59,13 @@ export class CreateIssueDto {
 
   @IsString()
   @IsOptional()
-  businessOwnerName?: string;
+  businessOwnerId?: string;
 
   @IsDateString()
   @IsOptional()
   businessOwnerReviewCompletionDate?: Date;
 
-  @IsNumber()
+  @IsString()
   @IsNotEmpty()
-  projectId: number;
+  projectId: string;
 }

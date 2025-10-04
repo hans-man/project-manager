@@ -1,7 +1,5 @@
-import { Project } from '../../projects/entities/project.entity';
 import { User } from './user.entity';
 import { TimeLog } from './time-log.entity';
-import { CostEntry } from './cost-entry.entity';
 import { BaseEntity } from '../../common/entities/base.entity';
 export declare enum TaskStatus {
     TO_DO = "TO_DO",
@@ -21,8 +19,7 @@ export declare class Task extends BaseEntity {
     startDate: Date;
     endDate: Date;
     storyPoints: number;
-    project: Project;
+    projectId: string;
     assignee: User;
     timeLogs: TimeLog[];
-    costEntries: CostEntry[];
 }

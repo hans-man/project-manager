@@ -13,7 +13,7 @@ export class CreateProjectDto {
   @IsOptional()
   budget?: number;
 
-  @IsNumber()
+  @IsString()
   @IsNotEmpty()
-  ownerId: number;
+  ownerId: string;
 }

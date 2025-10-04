@@ -1,10 +1,16 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
+import { ValidationPipe, BadRequestException } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express'; // Import this
+import { AllExceptionsFilter } from './common/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule); // Use NestExpressApplication
+  
+  app.setGlobalPrefix('api'); // Add global API prefix
+
+  app.useGlobalFilters(new AllExceptionsFilter()); // Add global exception filter
+
   // Disable ETag generation
   app.getHttpAdapter().getInstance().set('etag', false); // Add this line
   app.useGlobalPipes(

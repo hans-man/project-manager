@@ -2,42 +2,60 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './users/entities/user.entity';
-import { Project } from './projects/entities/project.entity';
-import { Task } from './users/entities/task.entity';
-import { WikiPage } from './users/entities/wiki-page.entity';
-import { TimeLog } from './users/entities/time-log.entity';
-import { CostEntry } from './users/entities/cost-entry.entity';
-import { Issue } from './issues/entities/issue.entity'; // Import Issue entity
+import { ConfigModule, ConfigService } from '@nestjs/config'; // Import ConfigModule and ConfigService
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { IssuesModule } from './issues/issues.module';
 import { WikisModule } from './wikis/wikis.module';
 import { TimelogsModule } from './timelogs/timelogs.module';
-import { CostentriesModule } from './costentries/costentries.module';
 import { ProjectsModule } from './projects/projects.module';
-import { AuditSubscriber } from './common/subscribers/audit.subscriber'; // AuditSubscriber 임포트
+import { InstanceCodesModule } from './instance-codes/instance-codes.module';
+import { DashboardModule } from './dashboard/dashboard.module';
+import { ProgramListModule } from './program-list/program-list.module';
+import { ProgramColumnNameModule } from './program-column-name/program-column-name.module';
+import configuration from './config/configuration'; // Import configuration
+import databaseConfig from './config/database.config'; // Import databaseConfig
+import jwtConfig from './config/jwt.config'; // Import jwtConfig
+import { JwtModule } from '@nestjs/jwt'; // Import JwtModule
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: 'Hans0209!!',
-      database: 'project_manager_db',
-      entities: [User, Project, Task, WikiPage, TimeLog, CostEntry, Issue],
-      synchronize: true, // Note: synchronize: true is for development only. Set to false in production.
-      subscribers: [AuditSubscriber], // AuditSubscriber 등록
+    ConfigModule.forRoot({
+      load: [configuration, databaseConfig, jwtConfig],
+      isGlobal: true,
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => {
+        const databaseConfig = configService.get('database');
+        if (!databaseConfig) {
+          throw new Error('Database configuration not found');
+        }
+        return databaseConfig;
+      },
+      inject: [ConfigService],
+    }),
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => {
+        const jwtConfig = await configService.get('jwt');
+        if (!jwtConfig) {
+          throw new Error('JWT configuration not found');
+        }
+        return jwtConfig;
+      },
+      inject: [ConfigService],
     }),
     UsersModule,
     AuthModule,
     IssuesModule,
     WikisModule,
     TimelogsModule,
-    CostentriesModule,
     ProjectsModule,
+    InstanceCodesModule,
+    DashboardModule,
+    ProgramListModule,
+    ProgramColumnNameModule,
   ],
   controllers: [AppController],
   providers: [AppService],

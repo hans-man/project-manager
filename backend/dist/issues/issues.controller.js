@@ -16,6 +16,7 @@ exports.IssuesController = void 0;
 const common_1 = require("@nestjs/common");
 const issues_service_1 = require("./issues.service");
 const create_issue_dto_1 = require("./dto/create-issue.dto");
+const update_issue_dto_1 = require("./dto/update-issue.dto");
 let IssuesController = class IssuesController {
     issuesService;
     constructor(issuesService) {
@@ -26,6 +27,12 @@ let IssuesController = class IssuesController {
     }
     findAll() {
         return this.issuesService.findAll();
+    }
+    findOne(id) {
+        return this.issuesService.findOne(+id);
+    }
+    update(id, updateIssueDto) {
+        return this.issuesService.update(+id, updateIssueDto);
     }
 };
 exports.IssuesController = IssuesController;
@@ -42,8 +49,23 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], IssuesController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Get)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], IssuesController.prototype, "findOne", null);
+__decorate([
+    (0, common_1.Patch)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, update_issue_dto_1.UpdateIssueDto]),
+    __metadata("design:returntype", void 0)
+], IssuesController.prototype, "update", null);
 exports.IssuesController = IssuesController = __decorate([
-    (0, common_1.Controller)('api/issues'),
+    (0, common_1.Controller)('issues'),
     __metadata("design:paramtypes", [issues_service_1.IssuesService])
 ], IssuesController);
 //# sourceMappingURL=issues.controller.js.map

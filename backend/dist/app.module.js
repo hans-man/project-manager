@@ -5,51 +5,72 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const typeorm_1 = require("@nestjs/typeorm");
-const user_entity_1 = require("./users/entities/user.entity");
-const project_entity_1 = require("./projects/entities/project.entity");
-const task_entity_1 = require("./users/entities/task.entity");
-const wiki_page_entity_1 = require("./users/entities/wiki-page.entity");
-const time_log_entity_1 = require("./users/entities/time-log.entity");
-const cost_entry_entity_1 = require("./users/entities/cost-entry.entity");
-const issue_entity_1 = require("./issues/entities/issue.entity");
+const config_1 = require("@nestjs/config");
 const users_module_1 = require("./users/users.module");
 const auth_module_1 = require("./auth/auth.module");
 const issues_module_1 = require("./issues/issues.module");
 const wikis_module_1 = require("./wikis/wikis.module");
 const timelogs_module_1 = require("./timelogs/timelogs.module");
-const costentries_module_1 = require("./costentries/costentries.module");
 const projects_module_1 = require("./projects/projects.module");
-const audit_subscriber_1 = require("./common/subscribers/audit.subscriber");
+const instance_codes_module_1 = require("./instance-codes/instance-codes.module");
+const dashboard_module_1 = require("./dashboard/dashboard.module");
+const program_list_module_1 = require("./program-list/program-list.module");
+const program_column_name_module_1 = require("./program-column-name/program-column-name.module");
+const configuration_1 = __importDefault(require("./config/configuration"));
+const database_config_1 = __importDefault(require("./config/database.config"));
+const jwt_config_1 = __importDefault(require("./config/jwt.config"));
+const jwt_1 = require("@nestjs/jwt");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            typeorm_1.TypeOrmModule.forRoot({
-                type: 'mysql',
-                host: 'localhost',
-                port: 3306,
-                username: 'root',
-                password: 'Hans0209!!',
-                database: 'project_manager_db',
-                entities: [user_entity_1.User, project_entity_1.Project, task_entity_1.Task, wiki_page_entity_1.WikiPage, time_log_entity_1.TimeLog, cost_entry_entity_1.CostEntry, issue_entity_1.Issue],
-                synchronize: true,
-                subscribers: [audit_subscriber_1.AuditSubscriber],
+            config_1.ConfigModule.forRoot({
+                load: [configuration_1.default, database_config_1.default, jwt_config_1.default],
+                isGlobal: true,
+            }),
+            typeorm_1.TypeOrmModule.forRootAsync({
+                imports: [config_1.ConfigModule],
+                useFactory: (configService) => {
+                    const databaseConfig = configService.get('database');
+                    if (!databaseConfig) {
+                        throw new Error('Database configuration not found');
+                    }
+                    return databaseConfig;
+                },
+                inject: [config_1.ConfigService],
+            }),
+            jwt_1.JwtModule.registerAsync({
+                imports: [config_1.ConfigModule],
+                useFactory: async (configService) => {
+                    const jwtConfig = await configService.get('jwt');
+                    if (!jwtConfig) {
+                        throw new Error('JWT configuration not found');
+                    }
+                    return jwtConfig;
+                },
+                inject: [config_1.ConfigService],
             }),
             users_module_1.UsersModule,
             auth_module_1.AuthModule,
             issues_module_1.IssuesModule,
             wikis_module_1.WikisModule,
             timelogs_module_1.TimelogsModule,
-            costentries_module_1.CostentriesModule,
             projects_module_1.ProjectsModule,
+            instance_codes_module_1.InstanceCodesModule,
+            dashboard_module_1.DashboardModule,
+            program_list_module_1.ProgramListModule,
+            program_column_name_module_1.ProgramColumnNameModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

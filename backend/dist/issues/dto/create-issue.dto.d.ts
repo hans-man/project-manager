@@ -7,13 +7,13 @@ export declare class CreateIssueDto {
     programId?: string;
     programName?: string;
     programDescription?: string;
-    assigneeName?: string;
+    assigneeId?: string;
     developmentDueDate?: Date;
     developmentCompletionDate?: Date;
     status?: string;
-    managerName?: string;
+    managerId?: string;
     managerReviewCompletionDate?: Date;
-    businessOwnerName?: string;
+    businessOwnerId?: string;
     businessOwnerReviewCompletionDate?: Date;
-    projectId: number;
+    projectId: string;
 }

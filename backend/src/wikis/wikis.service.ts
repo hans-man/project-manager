@@ -4,24 +4,30 @@ import { Repository } from 'typeorm';
 import { WikiPage } from '../users/entities/wiki-page.entity';
 import { CreateWikiPageDto } from './dto/create-wiki-page.dto';
 import { UpdateWikiPageDto } from './dto/update-wiki-page.dto';
+import { User } from '../users/entities/user.entity'; // Import User entity
 
 @Injectable()
 export class WikisService {
   constructor(
     @InjectRepository(WikiPage)
     private readonly wikiPageRepository: Repository<WikiPage>,
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
   ) {}
 
   async create(createWikiPageDto: CreateWikiPageDto): Promise<WikiPage> {
     const { title, content, projectId, authorId } = createWikiPageDto;
 
-    // In a real application, you would fetch the project and author entities
-    // For now, we'll just assign the IDs
+    const author = await this.userRepository.findOneBy({ id: authorId });
+    if (!author) {
+      throw new NotFoundException(`Author with ID ${authorId} not found`);
+    }
+
     const newWikiPage = this.wikiPageRepository.create({
       title,
       content,
-      project: { id: projectId },
-      author: { id: authorId },
+      projectId: String(projectId),
+      author,
     });
 
     return this.wikiPageRepository.save(newWikiPage);
@@ -39,7 +45,12 @@ export class WikisService {
     id: number,
     updateWikiPageDto: UpdateWikiPageDto,
   ): Promise<WikiPage> {
-    await this.wikiPageRepository.update(id, updateWikiPageDto);
+    const { projectId, ...restOfDto } = updateWikiPageDto;
+    const updateObject: Partial<WikiPage> = { ...restOfDto };
+    if (projectId) {
+      updateObject.projectId = String(projectId);
+    }
+    await this.wikiPageRepository.update(id, updateObject);
     const updatedWikiPage = await this.findOne(id);
     if (!updatedWikiPage) {
       throw new NotFoundException(`WikiPage with ID ${id} not found`);

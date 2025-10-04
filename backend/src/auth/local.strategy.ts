@@ -3,22 +3,24 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
+// This interface can be more specific if needed, but Omit<User, 'password'> covers it
 interface User {
   id: number;
+  loginId: string;
   email: string;
 }
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
   constructor(private authService: AuthService) {
-    super({ usernameField: 'email' });
+    super({ usernameField: 'loginId' }); // Changed from 'email' to 'loginId'
   }
 
   async validate(
-    email: string,
+    loginId: string,
     password: string,
-  ): Promise<Omit<User, 'password'>> {
-    const user = await this.authService.validateUser(email, password);
+  ): Promise<Omit<User, 'password'> | null> { // Return type should match service
+    const user = await this.authService.validateUser(loginId, password);
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
     }

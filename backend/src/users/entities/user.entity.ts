@@ -1,9 +1,8 @@
 import { Entity, Column, OneToMany } from 'typeorm';
-import { Project } from '../../projects/entities/project.entity';
+import { Issue } from '../../issues/entities/issue.entity';
 import { Task } from './task.entity';
 import { WikiPage } from './wiki-page.entity';
 import { TimeLog } from './time-log.entity';
-import { CostEntry } from './cost-entry.entity';
 import { BaseEntity } from '../../common/entities/base.entity';
 
 @Entity({ name: 'users' })
@@ -12,13 +11,31 @@ export class User extends BaseEntity {
   name: string;
 
   @Column({ unique: true })
+  loginId: string;
+
+  @Column({ unique: true })
   email: string;
 
   @Column()
   password: string; // In a real app, this should be hashed
 
-  @OneToMany(() => Project, (project) => project.owner)
-  projects: Project[];
+  @Column({ nullable: true })
+  departmentCode?: string;
+
+  @Column({ nullable: true })
+  positionCode?: string;
+
+  @Column({ nullable: true })
+  roleCode?: string;
+
+  @Column({ nullable: true })
+  userTypeCode?: string;
+
+  @Column({ type: 'date', nullable: true })
+  hireDate?: Date;
+
+  @Column({ type: 'date', nullable: true })
+  resignationDate?: Date;
 
   @OneToMany(() => Task, (task) => task.assignee)
   assignedTasks: Task[];
@@ -29,6 +46,12 @@ export class User extends BaseEntity {
   @OneToMany(() => TimeLog, (timeLog) => timeLog.user)
   timeLogs: TimeLog[];
 
-  @OneToMany(() => CostEntry, (costEntry) => costEntry.user)
-  costEntries: CostEntry[];
+  @OneToMany(() => Issue, issue => issue.assignee)
+  assignedIssues: Issue[];
+
+  @OneToMany(() => Issue, issue => issue.manager)
+  managedIssues: Issue[];
+
+  @OneToMany(() => Issue, issue => issue.businessOwner)
+  ownedIssues: Issue[];
 }

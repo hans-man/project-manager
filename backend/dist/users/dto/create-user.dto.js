@@ -13,8 +13,10 @@ exports.CreateUserDto = void 0;
 const class_validator_1 = require("class-validator");
 class CreateUserDto {
     name;
+    loginId;
     email;
     password;
+    userTypeCode;
 }
 exports.CreateUserDto = CreateUserDto;
 __decorate([
@@ -22,6 +24,12 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], CreateUserDto.prototype, "name", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.MinLength)(8, { message: 'Login ID must be at least 8 characters long' }),
+    __metadata("design:type", String)
+], CreateUserDto.prototype, "loginId", void 0);
 __decorate([
     (0, class_validator_1.IsEmail)(),
     (0, class_validator_1.IsNotEmpty)(),
@@ -33,4 +41,8 @@ __decorate([
     (0, class_validator_1.MinLength)(6, { message: 'Password must be at least 6 characters long' }),
     __metadata("design:type", String)
 ], CreateUserDto.prototype, "password", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateUserDto.prototype, "userTypeCode", void 0);
 //# sourceMappingURL=create-user.dto.js.map

@@ -57,32 +57,66 @@ let UsersService = class UsersService {
         this.userRepository = userRepository;
     }
     async create(createUserDto) {
-        const { email, password, ...userData } = createUserDto;
-        const existingUser = await this.userRepository.findOneBy({ email });
-        if (existingUser) {
+        const { loginId, email, password, ...userData } = createUserDto;
+        const existingUserByEmail = await this.userRepository.findOneBy({ email });
+        if (existingUserByEmail) {
             throw new common_1.ConflictException('User with this email already exists');
+        }
+        const existingUserByLoginId = await this.userRepository.findOneBy({ loginId });
+        if (existingUserByLoginId) {
+            throw new common_1.ConflictException('User with this Login ID already exists');
         }
         const hashedPassword = await bcrypt.hash(password, 10);
         const newUser = this.userRepository.create({
             ...userData,
+            loginId,
             email,
             password: hashedPassword,
         });
         return this.userRepository.save(newUser);
     }
-    async findOneByEmail(email) {
-        return this.userRepository.findOneBy({ email });
+    async findAll() {
+        return this.userRepository.find();
+    }
+    async findOneByLoginId(loginId) {
+        return this.userRepository.findOneBy({ loginId });
     }
     async findOneById(id) {
         return this.userRepository.findOneBy({ id });
     }
+    async findOneByEmail(email) {
+        return this.userRepository.findOneBy({ email });
+    }
     async validateUser(email, pass) {
         const user = await this.findOneByEmail(email);
-        if (user && (await bcrypt.compare(pass, user.password))) {
+        if (user && await bcrypt.compare(pass, user.password)) {
             const { password, ...result } = user;
             return result;
         }
         return null;
+    }
+    async update(id, updateUserDto) {
+        const user = await this.userRepository.findOneBy({ id });
+        if (!user) {
+            return null;
+        }
+        Object.assign(user, updateUserDto);
+        return this.userRepository.save(user);
+    }
+    async changePassword(id, newPassword) {
+        const user = await this.userRepository.findOneBy({ id });
+        if (!user) {
+            return null;
+        }
+        user.password = await bcrypt.hash(newPassword, 10);
+        return this.userRepository.save(user);
+    }
+    async remove(id) {
+        const user = await this.userRepository.findOneBy({ id });
+        if (!user) {
+            return null;
+        }
+        return this.userRepository.remove(user);
     }
 };
 exports.UsersService = UsersService;

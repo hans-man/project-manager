@@ -17,30 +17,22 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const project_entity_1 = require("./entities/project.entity");
-const user_entity_1 = require("../users/entities/user.entity");
 let ProjectsService = class ProjectsService {
     projectRepository;
-    userRepository;
-    constructor(projectRepository, userRepository) {
+    constructor(projectRepository) {
         this.projectRepository = projectRepository;
-        this.userRepository = userRepository;
     }
     async create(createProjectDto) {
         const { ownerId, ...projectData } = createProjectDto;
-        const owner = await this.userRepository.findOneBy({ id: ownerId });
-        if (!owner) {
-            throw new common_1.NotFoundException(`User with ID ${ownerId} not found`);
-        }
-        const newProject = this.projectRepository.create({ ...projectData, owner });
+        const newProject = this.projectRepository.create({ ...projectData, ownerId: String(ownerId) });
         return this.projectRepository.save(newProject);
     }
     async findAll() {
-        return this.projectRepository.find({ relations: ['owner'] });
+        return this.projectRepository.find();
     }
     async findOne(id) {
         const project = await this.projectRepository.findOne({
             where: { id },
-            relations: ['owner'],
         });
         if (!project) {
             throw new common_1.NotFoundException(`Project with ID ${id} not found`);
@@ -49,18 +41,13 @@ let ProjectsService = class ProjectsService {
     }
     async update(id, updateProjectDto) {
         const { ownerId, ...projectData } = updateProjectDto;
-        let owner = undefined;
+        const updateObject = { ...projectData };
         if (ownerId) {
-            const foundOwner = await this.userRepository.findOneBy({ id: ownerId });
-            if (!foundOwner) {
-                throw new common_1.NotFoundException(`User with ID ${ownerId} not found`);
-            }
-            owner = foundOwner;
+            updateObject.ownerId = String(ownerId);
         }
-        await this.projectRepository.update(id, { ...projectData, owner });
+        await this.projectRepository.update(id, updateObject);
         const updatedProject = await this.projectRepository.findOne({
             where: { id },
-            relations: ['owner'],
         });
         if (!updatedProject) {
             throw new common_1.NotFoundException(`Project with ID ${id} not found after update`);
@@ -78,8 +65,6 @@ exports.ProjectsService = ProjectsService;
 exports.ProjectsService = ProjectsService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(project_entity_1.Project)),
-    __param(1, (0, typeorm_1.InjectRepository)(user_entity_1.User)),
-    __metadata("design:paramtypes", [typeorm_2.Repository,
-        typeorm_2.Repository])
+    __metadata("design:paramtypes", [typeorm_2.Repository])
 ], ProjectsService);
 //# sourceMappingURL=projects.service.js.map

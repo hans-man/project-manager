@@ -1,7 +1,7 @@
 import { Entity, Column, ManyToOne } from 'typeorm';
 import { Task } from './task.entity';
 import { User } from './user.entity';
-import { Project } from '../../projects/entities/project.entity';
+
 import { BaseEntity } from '../../common/entities/base.entity';
 
 @Entity({ name: 'time_logs' })
@@ -18,6 +18,6 @@ export class TimeLog extends BaseEntity {
   @ManyToOne(() => User, (user) => user.timeLogs, { eager: true })
   user: User;
 
-  @ManyToOne(() => Project, (project) => project.timeLogs) // Add ManyToOne to Project
-  project: Project;
+  @Column({ nullable: true })
+  projectId: string;
 }

@@ -1,4 +1,5 @@
 import { Project } from '../../projects/entities/project.entity';
+import { User } from '../../users/entities/user.entity';
 import { BaseEntity } from '../../common/entities/base.entity';
 export declare class Issue extends BaseEntity {
     title: string;
@@ -9,13 +10,17 @@ export declare class Issue extends BaseEntity {
     programId: string;
     programName: string;
     programDescription: string;
-    assigneeName: string;
+    assigneeId: string;
+    assignee: User;
     developmentDueDate: Date;
     developmentCompletionDate: Date;
     status: string;
-    managerName: string;
+    priority: string;
+    managerId: string;
+    manager: User;
     managerReviewCompletionDate: Date;
-    businessOwnerName: string;
+    businessOwnerId: string;
+    businessOwner: User;
     businessOwnerReviewCompletionDate: Date;
     project: Project;
 }

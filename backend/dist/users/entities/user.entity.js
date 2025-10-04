@@ -11,21 +11,28 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
 const typeorm_1 = require("typeorm");
-const project_entity_1 = require("../../projects/entities/project.entity");
+const issue_entity_1 = require("../../issues/entities/issue.entity");
 const task_entity_1 = require("./task.entity");
 const wiki_page_entity_1 = require("./wiki-page.entity");
 const time_log_entity_1 = require("./time-log.entity");
-const cost_entry_entity_1 = require("./cost-entry.entity");
 const base_entity_1 = require("../../common/entities/base.entity");
 let User = class User extends base_entity_1.BaseEntity {
     name;
+    loginId;
     email;
     password;
-    projects;
+    departmentCode;
+    positionCode;
+    roleCode;
+    userTypeCode;
+    hireDate;
+    resignationDate;
     assignedTasks;
     wikiPages;
     timeLogs;
-    costEntries;
+    assignedIssues;
+    managedIssues;
+    ownedIssues;
 };
 exports.User = User;
 __decorate([
@@ -35,15 +42,39 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)({ unique: true }),
     __metadata("design:type", String)
+], User.prototype, "loginId", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ unique: true }),
+    __metadata("design:type", String)
 ], User.prototype, "email", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => project_entity_1.Project, (project) => project.owner),
-    __metadata("design:type", Array)
-], User.prototype, "projects", void 0);
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], User.prototype, "departmentCode", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], User.prototype, "positionCode", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], User.prototype, "roleCode", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], User.prototype, "userTypeCode", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'date', nullable: true }),
+    __metadata("design:type", Date)
+], User.prototype, "hireDate", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'date', nullable: true }),
+    __metadata("design:type", Date)
+], User.prototype, "resignationDate", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => task_entity_1.Task, (task) => task.assignee),
     __metadata("design:type", Array)
@@ -57,9 +88,17 @@ __decorate([
     __metadata("design:type", Array)
 ], User.prototype, "timeLogs", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => cost_entry_entity_1.CostEntry, (costEntry) => costEntry.user),
+    (0, typeorm_1.OneToMany)(() => issue_entity_1.Issue, issue => issue.assignee),
     __metadata("design:type", Array)
-], User.prototype, "costEntries", void 0);
+], User.prototype, "assignedIssues", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => issue_entity_1.Issue, issue => issue.manager),
+    __metadata("design:type", Array)
+], User.prototype, "managedIssues", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => issue_entity_1.Issue, issue => issue.businessOwner),
+    __metadata("design:type", Array)
+], User.prototype, "ownedIssues", void 0);
 exports.User = User = __decorate([
     (0, typeorm_1.Entity)({ name: 'users' })
 ], User);

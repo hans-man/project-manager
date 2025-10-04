@@ -11,13 +11,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.WikiPage = void 0;
 const typeorm_1 = require("typeorm");
-const project_entity_1 = require("../../projects/entities/project.entity");
 const user_entity_1 = require("./user.entity");
 const base_entity_1 = require("../../common/entities/base.entity");
 let WikiPage = class WikiPage extends base_entity_1.BaseEntity {
     title;
     content;
-    project;
+    projectId;
     author;
 };
 exports.WikiPage = WikiPage;
@@ -30,9 +29,9 @@ __decorate([
     __metadata("design:type", String)
 ], WikiPage.prototype, "content", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => project_entity_1.Project, (project) => project.wikiPages),
-    __metadata("design:type", project_entity_1.Project)
-], WikiPage.prototype, "project", void 0);
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], WikiPage.prototype, "projectId", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => user_entity_1.User, (user) => user.wikiPages, { eager: true }),
     __metadata("design:type", user_entity_1.User)

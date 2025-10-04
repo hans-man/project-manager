@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = function override(config, env) {
   // webpack-dev-server configuration
   if (config.devServer) {
@@ -10,5 +12,6 @@ module.exports = function override(config, env) {
       delete config.devServer.onBeforeSetupMiddleware;
     }
   }
+
   return config;
 };

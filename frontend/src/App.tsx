@@ -1,28 +1,39 @@
 import React, { useState, useEffect } from 'react';
+
+
+
+
+
+
+
+import ProgramListRoutes from './features/program-list/ProgramListRoutes';
+import ProgramColumnNameRoutes from './features/program-column-name/ProgramColumnNameRoutes';
+import UsersRoutes from './features/users/UsersRoutes';
+import WikiRoutes from './features/wiki/WikiRoutes';
+import TimeLogsRoutes from './features/timelogs/TimeLogsRoutes';
+import ProjectsRoutes from './features/projects/ProjectsRoutes';
+import InstanceCodesRoutes from './features/instance-codes/InstanceCodesRoutes';
+import DashboardRoutes from './features/dashboard/DashboardRoutes';
+import KanbanRoutes from './features/kanban/KanbanRoutes';
+import IssuesRoutes from './features/issues/IssuesRoutes';
+
+
+
+
+
+
+import MainLayout from './components/MainLayout'; // Import MainLayout component
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode'; // Import jwtDecode
 
 import Login from './components/Login';
 import SignUp from './components/SignUp'; // Import SignUp component
-
-import IssueList from './components/IssueList';
-import IssueForm from './IssueForm';
-import UserListPage from './UserListPage'; // Import UserListPage component
-import WikiPage from './components/WikiPage'; // Import WikiPage component
-import WikiPageDetail from './components/WikiPageDetail'; // Import WikiPageDetail component
-import WikiPageForm from './components/WikiPageForm'; // Import WikiPageForm component
-import TimeLogPage from './components/TimeLogPage'; // Import TimeLogPage component
-import TimeLogForm from './components/TimeLogForm'; // Import TimeLogForm component
-import CostEntryPage from './components/CostEntryPage'; // Import CostEntryPage component
-import CostEntryForm from './components/CostEntryForm'; // Import CostEntryForm component
-import ProjectPage from './components/ProjectPage'; // Import ProjectPage component
-import ProjectForm from './components/ProjectForm'; // Import ProjectForm component
-import MainLayout from './components/MainLayout'; // Import MainLayout component
 import { CssBaseline, Box } from '@mui/material';
 
 // Date Picker 관련 임포트
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+
 
 
 interface DecodedToken {
@@ -86,7 +97,7 @@ function App() {
   };
 
   return (
-    <Router>
+    <Router future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
       <CssBaseline />
       <LocalizationProvider dateAdapter={AdapterDateFns}> {/* LocalizationProvider 추가 */}
         <Routes>
@@ -94,23 +105,18 @@ function App() {
             <Route path="/*" element={
               <MainLayout handleLogout={handleLogout} token={token}>
                 <Routes>
-                  <Route path="/" element={<IssueList token={token} />} />
-                  <Route path="/issues/new" element={<IssueForm />} />
-                  <Route path="/users" element={<UserListPage token={token} />} />
-                  <Route path="/wiki" element={<WikiPage />} />
-                  <Route path="/wiki/new" element={<WikiPageForm />} />
-                  <Route path="/wiki/:id" element={<WikiPageDetail />} />
-                  <Route path="/wiki/:id/edit" element={<WikiPageForm />} />
-                  <Route path="/issues" element={<IssueList token={token} />} />
-                  <Route path="/timelogs" element={<TimeLogPage />} />
-                  <Route path="/timelogs/new" element={<TimeLogForm />} />
-                  <Route path="/timelogs/:id/edit" element={<TimeLogForm />} />
-                  <Route path="/costentries" element={<CostEntryPage />} />
-                  <Route path="/costentries/new" element={<CostEntryForm />} />
-                  <Route path="/costentries/:id/edit" element={<CostEntryForm />} />
-                  <Route path="/projects" element={<ProjectPage />} />
-                  <Route path="/projects/new" element={<ProjectForm currentUserId={currentUserId} />} />
-                  <Route path="/projects/:id/edit" element={<ProjectForm currentUserId={currentUserId} />} />
+                  <Route path="/" element={<DashboardRoutes />} />
+                  <Route path="/board/*" element={<KanbanRoutes token={token} />} />
+                  <Route path="/issues/*" element={<IssuesRoutes token={token} />} />
+                  <Route path="/program-list/*" element={<ProgramListRoutes />} />
+                  <Route path="/program-column-name/*" element={<ProgramColumnNameRoutes />} />
+                  <Route path="/users/*" element={<UsersRoutes token={token} />} />
+                  <Route path="/wiki/*" element={<WikiRoutes />} />
+                  <Route path="/timelogs/*" element={<TimeLogsRoutes />} />
+
+
+                  <Route path="/projects/*" element={<ProjectsRoutes currentUserId={currentUserId} token={token} />} />
+                  <Route path="/instance-codes/*" element={<InstanceCodesRoutes token={token} />} />
                 </Routes>
               </MainLayout>
             } />

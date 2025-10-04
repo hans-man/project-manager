@@ -4,10 +4,12 @@ import {
   ManyToOne,
   OneToMany,
 } from 'typeorm';
-import { Project } from '../../projects/entities/project.entity';
+
 import { User } from './user.entity';
 import { TimeLog } from './time-log.entity';
-import { CostEntry } from './cost-entry.entity';
+
+
+
 import { BaseEntity } from '../../common/entities/base.entity';
 
 export enum TaskStatus {
@@ -53,18 +55,18 @@ export class Task extends BaseEntity {
   @Column({ type: 'int', nullable: true })
   storyPoints: number;
 
-  @ManyToOne(() => Project, (project) => project.tasks)
-  project: Project;
+  @Column({ nullable: true })
+  projectId: string;
 
   @ManyToOne(() => User, (user) => user.assignedTasks, {
     nullable: true,
-    eager: true,
   })
   assignee: User;
 
   @OneToMany(() => TimeLog, (timeLog) => timeLog.task)
   timeLogs: TimeLog[];
 
-  @OneToMany(() => CostEntry, (costEntry) => costEntry.task)
-  costEntries: CostEntry[];
+
+
+
 }

@@ -13,14 +13,13 @@ exports.TimeLog = void 0;
 const typeorm_1 = require("typeorm");
 const task_entity_1 = require("./task.entity");
 const user_entity_1 = require("./user.entity");
-const project_entity_1 = require("../../projects/entities/project.entity");
 const base_entity_1 = require("../../common/entities/base.entity");
 let TimeLog = class TimeLog extends base_entity_1.BaseEntity {
     hours;
     date;
     task;
     user;
-    project;
+    projectId;
 };
 exports.TimeLog = TimeLog;
 __decorate([
@@ -40,9 +39,9 @@ __decorate([
     __metadata("design:type", user_entity_1.User)
 ], TimeLog.prototype, "user", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => project_entity_1.Project, (project) => project.timeLogs),
-    __metadata("design:type", project_entity_1.Project)
-], TimeLog.prototype, "project", void 0);
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], TimeLog.prototype, "projectId", void 0);
 exports.TimeLog = TimeLog = __decorate([
     (0, typeorm_1.Entity)({ name: 'time_logs' })
 ], TimeLog);

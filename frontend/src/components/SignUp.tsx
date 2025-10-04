@@ -1,32 +1,21 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Button, TextField, Box, Typography, Container, Link as MuiLink } from '@mui/material';
-import { Link } from 'react-router-dom'; // Import Link for navigation
+import api from '../services/api';
+import { Form, Input, Button, Typography, Alert, Row, Col } from 'antd';
+import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
+import { Link, useNavigate } from 'react-router-dom';
+
+const { Title } = Typography;
 
 const SignUp = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-  });
   const [message, setMessage] = useState('');
+  const navigate = useNavigate();
 
-  const { name, email, password } = formData;
-
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onFinish = async (values: any) => {
     try {
-      const response = await axios.post('http://localhost:3001/users', {
-        name,
-        email,
-        password,
-      });
-      setMessage(`사용자 생성 성공! 사용자 ID: ${response.data.id}`);
-      setFormData({ name: '', email: '', password: '' }); // Clear form
+      await api.post('/users', values);
+      alert('회원가입을 축하합니다.');
+      navigate('/login');
     } catch (error: any) {
       if (axios.isAxiosError(error) && error.response) {
         setMessage(`오류: ${error.response.data.message}`);
@@ -37,89 +26,72 @@ const SignUp = () => {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <Box
-        sx={{
-          marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          p: 4, // Add padding
-          borderRadius: 2, // Rounded corners
-          boxShadow: 3, // Add shadow for a card-like effect
-          bgcolor: 'background.paper', // Use theme background color
-        }}
-      >
-        {/* Placeholder for Logo */}
-        <Box sx={{ mb: 2 }}>
-          <Typography variant="h4" component="div" sx={{ fontWeight: 'bold', color: 'primary.main' }}>
-            내 로고
-          </Typography>
-        </Box>
-
-        <Typography component="h1" variant="h5" sx={{ mb: 3 }}>
-          회원가입
-        </Typography>
-        <Box component="form" onSubmit={onSubmit} sx={{ mt: 1, width: '100%' }}>
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="name"
-            label="이름"
-            name="name"
-            autoComplete="name"
-            autoFocus
-            value={name}
-            onChange={onChange}
-            variant="outlined" // Use outlined variant for a cleaner look
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="이메일 주소"
-            name="email"
-            autoComplete="email"
-            value={email}
-            onChange={onChange}
-            variant="outlined" // Use outlined variant for a cleaner look
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="비밀번호"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            value={password}
-            onChange={onChange}
-            variant="outlined" // Use outlined variant for a cleaner look
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2, py: 1.5 }}
-          >
-            회원가입
-          </Button>
-          {message && (
-            <Typography color={message.startsWith('오류') ? 'error' : 'success'} sx={{ mt: 2 }}>
-              {message}
-            </Typography>
-          )}
-          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-            <MuiLink component={Link} to="/" variant="body2">
-              로그인
-            </MuiLink>
-          </Box>
-        </Box>
-      </Box>
-    </Container>
+    <Row justify="center" align="middle" style={{ minHeight: '100vh' }}>
+      <Col xs={22} sm={16} md={12} lg={8} xl={6}>
+        <div style={{ background: 'white', padding: '40px', borderRadius: '8px' }}>
+          <Title level={2} style={{ textAlign: 'center', marginBottom: '24px' }}>회원가입</Title>
+          <Form name="register" onFinish={onFinish} scrollToFirstError>
+            <Form.Item
+              name="name"
+              rules={[{ required: true, message: '이름을 입력해주세요.', whitespace: true }]}
+            >
+              <Input prefix={<UserOutlined />} placeholder="이름" />
+            </Form.Item>
+            <Form.Item
+              name="loginId"
+              rules={[{ required: true, message: '로그인 ID를 입력해주세요.' }]}
+            >
+              <Input prefix={<UserOutlined />} placeholder="로그인 ID (8자 이상)" />
+            </Form.Item>
+            <Form.Item
+              name="email"
+              rules={[
+                { type: 'email', message: '유효한 이메일이 아닙니다.' },
+                { required: true, message: '이메일을 입력해주세요.' },
+              ]}
+            >
+              <Input prefix={<MailOutlined />} placeholder="이메일 주소" />
+            </Form.Item>
+            <Form.Item
+              name="password"
+              rules={[{ required: true, message: '비밀번호를 입력해주세요.' }]}
+              hasFeedback
+            >
+              <Input.Password prefix={<LockOutlined />} placeholder="비밀번호" />
+            </Form.Item>
+            <Form.Item
+              name="confirm"
+              dependencies={['password']}
+              hasFeedback
+              rules={[
+                { required: true, message: '비밀번호를 확인해주세요.' },
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    if (!value || getFieldValue('password') === value) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(new Error('비밀번호가 일치하지 않습니다.'));
+                  },
+                }),
+              ]}
+            >
+              <Input.Password prefix={<LockOutlined />} placeholder="비밀번호 확인" />
+            </Form.Item>
+            <Form.Item>
+              <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
+                회원가입
+              </Button>
+            </Form.Item>
+            {message && (
+              <Alert message={message} type="error" showIcon />
+            )}
+            <div style={{ textAlign: 'center' }}>
+              이미 계정이 있으신가요? <Link to="/login">로그인</Link>
+            </div>
+          </Form>
+        </div>
+      </Col>
+    </Row>
   );
 };
 

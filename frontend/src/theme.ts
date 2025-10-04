@@ -1,45 +1,32 @@
 import { createTheme } from '@mui/material/styles';
 
+// A clean, simple Material Design 3-inspired light theme.
 const theme = createTheme({
   palette: {
-    mode: 'dark',
+    mode: 'light',
     primary: {
-      main: '#27E4A4', // A bright green for accents
+      main: '#006974', // Example primary color from MD3 builder
+    },
+    secondary: {
+      main: '#4A6365',
     },
     background: {
-      default: '#1A2532', // Dark blue/charcoal
-      paper: '#243447',   // A slightly lighter shade for surfaces like cards
-    },
-    text: {
-      primary: '#FFFFFF',
-      secondary: '#A9B2BC', // A lighter grey for secondary text
+      default: '#F7F9FA',
+      paper: '#FFFFFF',
     },
   },
   typography: {
     fontFamily: 'Poppins, sans-serif',
-    h4: {
-      fontWeight: 600,
-    },
-    h5: {
-      fontWeight: 600,
-    },
-    h6: {
-      fontWeight: 600,
-    },
   },
+  // Optional: Add component overrides for a more custom feel
   components: {
-    MuiButton: {
+    MuiAppBar: {
       styleOverrides: {
         root: {
-          borderRadius: 8,
-          textTransform: 'none',
-        },
-      },
-    },
-    MuiCard: {
-      styleOverrides: {
-        root: {
-          border: '1px solid #3A4A5D',
+          backgroundColor: '#F7F9FA',
+          color: '#191C1C',
+          boxShadow: 'none',
+          borderBottom: '1px solid #DCE4E5'
         },
       },
     },
